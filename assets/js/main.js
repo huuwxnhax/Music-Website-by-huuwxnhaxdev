@@ -4,19 +4,19 @@ const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document)
 
 const appContainers = Array.from($$('.app__container'));
-const albumList = $('.album__container')
+const albumContainers = Array.from($$('.album__container'))
 const authors = Array.from($$('.player__song-author'));
 const audio = $('#audio');
 const btnNavSetting = $('.header__nav-btn.btn__nav-setting')
 const btnMenuSetting = $('.setting__menu')
-const createrContainer = $('.creater__container')
+const createrContainers = Array.from($$('.creater__container'))
 const durationTimes = Array.from($$('.durationtime'));
 const header = $('.header')
-const mvContainer = $('.mv__container')
+const mvContainers = Array.from($$('.mv__container'))
 const nextBtns = Array.from($$('.control-btn.btn-next'))
 const prevBtns = Array.from($$('.control-btn.btn-prev'))
 const playlistSongs = Array.from($$('.playlist__list'))
-const playlistList = $('.playlist__container')
+const playlistLists = Array.from($$('.playlist__container'))
 const playBtns = $$('.btn-toggle-play')
 const player = $('.player')
 const playerContainer = $('.player__container-song')
@@ -58,7 +58,7 @@ const app = {
 
     playlists: JSON.parse(localStorage.getItem(PLAYLIST_STORAGE_KEY) || '[]'),
     songlists: JSON.parse(localStorage.getItem(SONGS_STORAGE_KEY) || '[]'),
-    ablumLists: JSON.parse(localStorage.getItem(ALBUM_STORAGE_KEY) || '[]'),
+    albumLists: JSON.parse(localStorage.getItem(ALBUM_STORAGE_KEY) || '[]'),
     mvlists: JSON.parse(localStorage.getItem(MV_STORAGE_KEY) || '[]'),
     createrlists: JSON.parse(localStorage.getItem(CREATER_STORAGE_KEY) || '[]'),
     durationList: JSON.parse(localStorage.getItem(DURATION_STORAGE_KEY) || `[
@@ -107,8 +107,9 @@ const app = {
     },
 
     renderPlaylist: function() {  
-            const htmlPlaylist = this.playlists.map((playlist, index) => {
-                return `
+        playlistLists.forEach((playlistList, index) => {
+            playlistList.innerHTML = app.html`${app.playlists.map((playlist, index) => {
+                return app.html`
                 <div class="col l-2-4">
                     <div class="row--item playlist__item">
                         <div class="row__item-container flex--top-left">
@@ -138,19 +139,20 @@ const app = {
                         </div>
                     </div>
                 </div>`
-            })
-            playlistList.innerHTML = htmlPlaylist.join('')
+            })}`
+        })
     },
 
     renderAlbum: function () {
-        const htmlAlbum = this.ablumLists.map((album, index) => {
-            return `
-            <div class="col l-2-4">
+        albumContainers.forEach((albumContainer, index) => {
+            albumContainer.innerHTML = app.html`${app.albumLists.map((albumList, index) => {
+                return app.html`
+                <div class="col l-2-4">
                     <div class="row--item album__item">
                         <div class="row__item-container flex--top-left">
                             <div class="item--display">
                                 <div class="display--background pt-1" 
-                                    style="background: url('${album.background}') no-repeat center center / cover;">
+                                    style="background: url('${albumList.background}') no-repeat center center / cover;">
                                 </div>
                                 <div class="display--actions">
                                     <div class="actions--item">
@@ -168,19 +170,20 @@ const app = {
                                 <div class="overlay"></div>
                             </div>
                             <div class="item--infor">
-                                <a class="item--title is-twoline">${album.title}</a>
+                                <a class="item--title is-twoline">${albumList.title}</a>
                             </div>
                         </div>
                     </div>
                 </div>`
-        }) 
-        albumList.innerHTML = htmlAlbum.join('')
+            })}`
+        })
     },
 
     renderMV: function() {
-        const htmlMv = this.mvlists.map((mvList, mvIndex) => {
-            return `
-            <div class="col l-4">
+        mvContainers.forEach((mvContainer, index) => {
+            mvContainer.innerHTML = app.html`${app.mvlists.map((mvList, index) => {
+                return app.html`
+                <div class="col l-4">
                 <div class="row--item album__item">
                     <div class="row__item-container flex--top-left">
                         <div class="item--display">
@@ -214,14 +217,15 @@ const app = {
                     </div>
                 </div>
             </div>`
+            })}`
         })
-        mvContainer.innerHTML = htmlMv.join('')
     },
     
     renderCreater: function() {
-        const htmlCreater = this.createrlists.map((createrList, createrIndex) => {
-            return `
-            <div class="col l-2-4">
+        createrContainers.forEach((createrContainer, index) => {
+            createrContainer.innerHTML = app.html`${app.createrlists.map((createrList, index) => {
+                return app.html`
+                <div class="col l-2-4">
                 <div class="row--item creater__item">
                     <div class="row__item-container flex--top-left">
                         <div class="item--display br-5">
@@ -260,8 +264,8 @@ const app = {
                     </div>
                 </div>
             </div>`
+            })}`
         })
-        createrContainer.innerHTML = htmlCreater.join('')
     },
 
     render: function() {
